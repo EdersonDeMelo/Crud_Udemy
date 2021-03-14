@@ -21,11 +21,11 @@ public class ApplicationControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors handleValidationErros(MethodArgumentNotValidException ex){
         BindingResult bindingResult = ex.getBindingResult();
-        List<String>message = bindingResult.getAllErrors()
+        List<String>messages = bindingResult.getAllErrors()
                 .stream()
                 .map(objectError -> objectError.getDefaultMessage())
                 .collect(Collectors.toList());
-        return new ApiErrors(message);
+        return new ApiErrors(messages);
     }
 
     @ExceptionHandler(ResponseStatusException.class)
