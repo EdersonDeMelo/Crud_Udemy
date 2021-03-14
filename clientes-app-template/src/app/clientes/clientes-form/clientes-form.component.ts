@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../cliente'
 import { ClientesService } from '../../clientes.service'
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-clientes-form',
@@ -12,31 +12,55 @@ export class ClientesFormComponent implements OnInit {
   cliente: Cliente;
   success: boolean = false;
   errors = [];
+  id: number;
 
   constructor(
-    private service: ClientesService
-    , private router: Router) {
+    private service: ClientesService,
+    private router: Router,
+    private activatedRouter: ActivatedRoute
+  ) {
     this.cliente = new Cliente();
   }
 
   ngOnInit(): void {
+    let params = this.activatedRouter.params
+    if (params && params.value && params.value.id) {
+      this.id = params.value.id;
+      this.service
+        .getClienteById(this.id)
+        .subscribe(
+          response => this.cliente = response,
+          errorResponse => this.cliente = new Cliente()
+        )
+    }
   }
   voltarParaListagem() {
     this.router.navigate(['/clientes-lista'])
   }
 
   onSubmit() {
-    this.service
-      .salvar(this.cliente)
-      .subscribe(response => {
-        this.success = true;
-        this.errors = null;
-        this.cliente = response;
-      }, errorsResponse => {
-        this.success = false;
-        this.errors = errorsResponse.error.errors;
-      }
-      )
+    if (this.id) {
+      this.service
+        .atualizar(this.cliente)
+        .subscribe(response => {
+          this.success = true;
+          this.errors = null;
+        }, errorResponse => {
+          this.errors = ['Erro ao atualizar']
+        })
+    } else {
+      this.service
+        .salvar(this.cliente)
+        .subscribe(response => {
+          this.success = true;
+          this.errors = null;
+          this.cliente = response;
+        }, errorsResponse => {
+          this.success = false;
+          this.errors = errorsResponse.error.errors;
+        }
+        )
+    }
   }
 
 }
