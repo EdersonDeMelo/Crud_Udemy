@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ServicoPrestadoService {
-  apiURL: string = environment.apiURLBase + "api/servicos-prestados"
+  apiURL: string = environment.apiURLBase + "/api/servicos-prestados"
   constructor(private http: HttpClient) { }
 
   salvar(servicoPrestado: ServicoPrestado): Observable<any> {

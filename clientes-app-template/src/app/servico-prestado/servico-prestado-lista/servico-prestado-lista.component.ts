@@ -6,10 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./servico-prestado-lista.component.css']
 })
 export class ServicoPrestadoListaComponent implements OnInit {
+  nome: string;
+  mes: number;
+  meses: number[];
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor() {
+    this.meses = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   }
 
+  ngOnInit(): void {
+
+  }
+  consultar() {
+    console.log(this.nome, this.mes)
+  }
 }

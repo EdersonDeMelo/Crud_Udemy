@@ -9,6 +9,10 @@ import java.math.BigDecimal;
 public class BigDecimalConverter {
 
     public BigDecimal converter(String value){
-        return new BigDecimal(value.replace(",", "").replace(",", "."));
+        if (value == null){
+            return null;
+        }
+        value = value.replace(",", "").replace(",", ".");
+        return new BigDecimal(value);
     }
 }
