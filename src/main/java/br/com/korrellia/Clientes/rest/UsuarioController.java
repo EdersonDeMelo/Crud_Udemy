@@ -1,11 +1,14 @@
 package br.com.korrellia.Clientes.rest;
 
 
+import br.com.korrellia.Clientes.exception.UsuarioCadastradoException;
 import br.com.korrellia.Clientes.model.entity.Usuario;
 import br.com.korrellia.Clientes.model.repository.UsuarioRepository;
+import br.com.korrellia.Clientes.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -14,10 +17,16 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UsuarioController {
 
-    private final UsuarioRepository repository;
+    private final UsuarioService service;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void salvar(@RequestBody @Valid Usuario usuario){
-        repository.save(usuario);
+    public void salvar(@RequestBody @Valid Usuario usuario) {
+        try {
+            service.salvar(usuario);
+
+        } catch (UsuarioCadastradoException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 }
