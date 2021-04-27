@@ -23,7 +23,7 @@ export class ClientesListaComponent implements OnInit {
       .subscribe(resposta => this.clientes = resposta);
   }
   novoCadastro() {
-    this.router.navigate(['/clientes-form']);
+    this.router.navigate(['/clientes/form']);
   }
   preparaDelecao(cliente: Cliente) {
     this.clienteSelecionado = cliente;
